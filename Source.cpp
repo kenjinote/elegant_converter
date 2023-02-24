@@ -41,7 +41,8 @@ int Factor(int n, LPWSTR lpszText)
 	}
 }
 
-UINT Calculate(LPCWSTR lpszText) {
+UINT Calculate(LPCWSTR lpszText)
+{
 	UINT uNumber = 0;
 	int nSize = lstrlen(lpszText);
 	for (int i = 0;i < nSize;i++) {
@@ -66,8 +67,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	static HWND hButton2;
 	static HWND hEdit1;
 	static HWND hEdit2;
-	switch (msg)
-	{
+	switch (msg) {
 	case WM_CREATE:
 		hEdit1 = CreateWindowEx(WS_EX_CLIENTEDGE, L"EDIT", L"349", WS_VISIBLE | WS_CHILD | WS_TABSTOP | ES_AUTOHSCROLL | ES_NUMBER, 0, 0, 0, 0, hWnd, (HMENU)1000, ((LPCREATESTRUCT)lParam)->hInstance, 0);
 		hButton1 = CreateWindow(L"BUTTON", L"変換↓", WS_VISIBLE | WS_CHILD | WS_TABSTOP, 0, 0, 0, 0, hWnd, (HMENU)IDOK, ((LPCREATESTRUCT)lParam)->hInstance, 0);
@@ -81,16 +81,14 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		MoveWindow(hEdit2, 10, 90, 512, 32, TRUE);
 		break;
 	case WM_COMMAND:
-		if (LOWORD(wParam) == IDOK)
-		{
+		if (LOWORD(wParam) == IDOK) {
 			DWORD dwNumber = GetDlgItemInt(hWnd, 1000, 0, 0);
 			WCHAR szOperatorList[1024] = {};
 			Factor(dwNumber, szOperatorList);
 			wstring s = szOperatorList;
 			reverse(s.begin(), s.end());
 			SetWindowText(hEdit2, s.c_str());
-		}
-		else if (LOWORD(wParam) == 1002) {
+		} else if (LOWORD(wParam) == 1002) {
 			WCHAR szText[1024];
 			GetWindowText(hEdit2, szText, _countof(szText));
 			UINT dwNumber = Calculate(szText);
@@ -142,10 +140,8 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
 	);
 	ShowWindow(hWnd, SW_SHOWDEFAULT);
 	UpdateWindow(hWnd);
-	while (GetMessage(&msg, 0, 0, 0))
-	{
-		if (!IsDialogMessage(hWnd, &msg))
-		{
+	while (GetMessage(&msg, 0, 0, 0)) {
+		if (!IsDialogMessage(hWnd, &msg)) {
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
 		}
